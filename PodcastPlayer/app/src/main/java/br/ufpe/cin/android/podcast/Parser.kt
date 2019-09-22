@@ -99,6 +99,8 @@ object Parser {
         var link: String? = null
         var pubDate: String? = null
         var description: String? = null
+        var downloadLink: String? = null
+        var imageLink: String? = null
         parser.require(XmlPullParser.START_TAG, null, "item")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -113,11 +115,16 @@ object Parser {
                 pubDate = readData(parser, "pubDate")
             } else if (name == "description") {
                 description = readData(parser, "description")
+            } else if (name == "enclosure") {
+                downloadLink = readAttribute(parser, "enclosure", "url")
+            } else if (name == "itunes:image") {
+                imageLink = readImage(parser)
+                skip(parser)
             } else {
                 skip(parser)
             }
         }
-        return ItemFeed(title!!, link!!, pubDate!!, description!!, "carregar o link")
+        return ItemFeed(title!!, link!!, pubDate!!, description!!, downloadLink!!, imageLink!!)
     }
 
     // Processa tags de forma parametrizada no feed.
@@ -137,6 +144,22 @@ object Parser {
             parser.nextTag()
         }
         return result
+    }
+
+    @Throws(IOException::class, XmlPullParserException::class)
+    fun readAttribute(parser: XmlPullParser, tag: String, attribute: String): String {
+        parser.require(XmlPullParser.START_TAG, null, tag)
+        val data = parser.getAttributeValue(null, attribute)
+        parser.nextTag()
+        parser.require(XmlPullParser.END_TAG, null, tag)
+        return data
+    }
+
+
+    @Throws(XmlPullParserException::class, IOException::class)
+    fun readImage(parser:XmlPullParser): String {
+        val imageLink: String? = parser.getAttributeValue(null, "href")
+        return imageLink!!
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
