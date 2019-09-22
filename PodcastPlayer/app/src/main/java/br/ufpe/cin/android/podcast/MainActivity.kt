@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun runFeed(podcastURL: String) {
         val db = PodcastDatabase.getDatabase(this)
-        // val itemFeed: List≤ItemFeed>? = null
 
         doAsync {
             try {
@@ -68,7 +67,6 @@ class MainActivity : AppCompatActivity() {
 
             layoutManager = LinearLayoutManager(ctx)
 
-            // specify an viewAdapter (see also next example)
             adapter = MyAdapter(podcastDataset)
 
             addItemDecoration(

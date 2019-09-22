@@ -34,13 +34,6 @@ class MyAdapter(private val myDataset: List<ItemFeed>) :
                 text = myDataset[position].title
 
                 onClick {
-                    /*
-                    val i = Intent(context, EpisodeDetailActivity::class.java).apply {
-                        // Passes the ItemFeed object to the EpisodeDetail activity
-                        putExtra("item_details", myDataset[position])
-                    }
-                     */
-
                     val intent = Intent(context, EpisodeDetailActivity::class.java)
                     intent.putExtra("item_title", myDataset[position].title)
 

@@ -13,6 +13,6 @@ interface PodcastDAO {
     @Query("SELECT * FROM ItemFeed")
     fun getAll() : List<ItemFeed>
 
-    @Query("SELECT * FROM itemFeed WHERE title LIKE :q")
-    fun getItem(q : String) : ItemFeed
+    @Query("SELECT * FROM itemFeed WHERE title LIKE :selected")
+    fun getItem(selected : String) : ItemFeed
 }
